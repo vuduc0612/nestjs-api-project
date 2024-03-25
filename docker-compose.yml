@@ -1,7 +1,17 @@
 services:
   postgres:
-    image: postgres
-    env_file:
-      - .env 
+    image: postgres:16.2
+    restart: always
+    environment:
+      TZ: 'Asia/Ho_Chi_Minh'
+      PGTZ: 'Asia/Ho_Chi_Minh'
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
     ports:
-      - '5432:5432'
+      - ${DB_PORT}:5432
+    volumes:
+      - ./docker-data/postgres-data:/var/lib/postgresql/data
+
+    env_file:
+      - .env

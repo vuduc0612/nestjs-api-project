@@ -6,16 +6,16 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({unique: true})
+  @Column({ unique: true })
   email: string;
 
   @Column()
   password: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   lastName: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   firstName: string;
 
   constructor(user: Partial<User>) {
