@@ -22,7 +22,7 @@ export class AuthService {
             const newUser = new User({email: dto.email, password: hashPassword});
             await userRepository.save(newUser);
 
-            delete newUser.password;
+            //delete newUser.password;
             return this.signToken(newUser.id, newUser.email);;
         }
         else{
@@ -50,6 +50,7 @@ export class AuthService {
 
         //delete user.password;
         return this.signToken(user.id, user.email);
+        //return user;
     }
 
     async signToken(userId: number, email: string){
