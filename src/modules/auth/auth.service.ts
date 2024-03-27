@@ -1,26 +1,29 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { User } from '../user/entities/user.entity';
-import { DataSource } from 'typeorm';
-import { AuthDto } from './dto/auth.dto';
+import { Repository } from 'typeorm';
 import * as argon from 'argon2';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '@entity/user.entity';
+import { AuthDto } from '@dto/auth.dto';
+
 
 @Injectable()
 export class AuthService {
-    constructor(private dataSource: DataSource,
-                private configService: ConfigService,
+    constructor(private configService: ConfigService,
                 private jwt: JwtService,
+                @InjectRepository(User)
+                private userRepository: Repository<User>,
         ) {}
     async signUp(dto: AuthDto){
-        const userRepository = this.dataSource.getRepository(User);
-        const user = await userRepository.findOneBy(
+        const user = await this.userRepository.findOneBy(
             {email: dto.email }
         );
         if(!user){
+            
             const hashPassword = await argon.hash(dto.password);
             const newUser = new User({email: dto.email, password: hashPassword});
-            await userRepository.save(newUser);
+            await this.userRepository.save(newUser);
 
             //delete newUser.password;
             return this.signToken(newUser.id, newUser.email);;
@@ -32,8 +35,8 @@ export class AuthService {
     }
 
     async signIn(dto: AuthDto){
-        const userRepository = this.dataSource.getRepository(User);
-        const user = await userRepository.findOneBy(
+        
+        const user = await this.userRepository.findOneBy(
             {email: dto.email},
         );
         if(!user){

@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { Todo } from '../todo/entity/todo.entity';
+import { User } from '@entity/user.entity';
+import { UserService } from '@service/user.service';
+import { UserController } from '@controller/user.controller';
 
 @Module({
   imports: [

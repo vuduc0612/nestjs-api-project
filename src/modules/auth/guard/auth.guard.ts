@@ -1,7 +1,8 @@
+import { User } from '@entity/user.entity';
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
-import { User } from 'src/modules/user/entities/user.entity';
+
 import { DataSource } from 'typeorm';
 
 @Injectable()

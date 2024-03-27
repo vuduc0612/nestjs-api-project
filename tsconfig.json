@@ -9,13 +9,34 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@entity/todo.entity": ["modules/todo/entity/todo.entity"],
+      "@entity/user.entity": ["modules/user/entity/user.entity"],
+      "@dto/auth.dto": ["modules/auth/dto/auth.dto"],
+
+      "@controller/auth.controller": ["modules/auth/auth.controller"],
+      "@controller/user.controller": ["modules/user/user.controller"],
+      "@controller/todo.controller": ["modules/todo/todo.controller"],
+
+      "@service/auth.service": ["modules/auth/auth.service"],
+      "@service/user.service": ["modules/user/user.service"],
+      "@service/todo.service": ["modules/todo/todo.service"],
+
+      "@module/auth.module": ["modules/auth/auth.module"],
+      "@module/user.module": ["modules/user/user.module"],
+      "@module/todo.module": ["modules/todo/todo.module"],
+      "@module/database.module": ["base/database/database.module"],
+      "@module/app.module": ["app.module"],
+      "@guard/auth.guard": ["modules/auth/guard/auth.guard"],
+      "@decorator/get-user.decorator": ["modules/auth/decorator/get-user.decorator"]
+    }
   }
 }

@@ -10,13 +10,11 @@ import {
     UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
-
-import { TodoService } from './todo.service';
-import { AuthGuard } from '../auth/guard/auth.guard';
-import { GetUser } from '../auth/decorator/get-user.decorator';
-import { User } from '../user/entities/user.entity';
-import { Todo } from './entity/todo.entity';
-
+import { TodoService } from '@service/todo.service';
+import { User } from '@entity/user.entity';
+import { Todo } from '@entity/todo.entity';
+import { AuthGuard } from '@guard/auth.guard';
+import { GetUser } from '@decorator/get-user.decorator';
 
 @UseGuards(AuthGuard)
 @UseInterceptors(ClassSerializerInterceptor)
@@ -26,11 +24,13 @@ export class TodoController {
 
     @Get()
     async findAll(@GetUser() user: User) {
+        //console.log(user);
         return this.todoService.findAll(user.id);
     }
 
     @Post()
     async create(@Body() todo: Todo, @GetUser() user: User) {
+        //console.log(user);
         return this.todoService.create(user.id, todo);
     }
 
@@ -41,9 +41,6 @@ export class TodoController {
 
     @Delete(':id')
     async delete(@GetUser() user: User, @Param('id') id: number) {
-         this.todoService.delete(user.id, id);
-         return {
-            msg: 'Delete Successfully',
-         }
+        return this.todoService.delete(user.id, id);
     }
 }

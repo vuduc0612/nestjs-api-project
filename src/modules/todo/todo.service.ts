@@ -1,9 +1,9 @@
+import { Todo } from '@entity/todo.entity';
+import { User } from '@entity/user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-
 import { Repository } from 'typeorm';
-import { Todo } from './entity/todo.entity';
-import { User } from '../user/entities/user.entity';
+
 
 @Injectable()
 export class TodoService {
@@ -39,9 +39,23 @@ export class TodoService {
         });
     }
 
-    async delete(userId: number, todoId: number): Promise<void> {
+    async delete(userId: number, todoId: number) {
+        const todo = await this.todoRepository.findOne({
+            where: {
+                id: todoId,
+                user: { id: userId }
+            }
+        })
+        //console.log(todo);
+        if(!todo) return {
+           msg: 'Delete Fail',
+        };
         await this.todoRepository.delete({ 
             id: todoId, user: { id: userId } 
         });
+        
+        return {
+            msg: 'Delete Successful',
+        };
     }
 }

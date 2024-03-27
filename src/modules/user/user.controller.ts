@@ -1,7 +1,13 @@
-import { ClassSerializerInterceptor, Controller, Get, UseGuards, UseInterceptors } from '@nestjs/common';
-import { AuthGuard } from '../auth/guard/auth.guard';
-import { GetUser } from '../auth/decorator/get-user.decorator';
-import { User } from './entities/user.entity';
+import { 
+    ClassSerializerInterceptor, 
+    Controller, 
+    Get, 
+    UseGuards, 
+    UseInterceptors 
+} from '@nestjs/common';
+import { User } from '@entity/user.entity';
+import { AuthGuard } from '@guard/auth.guard';
+import { GetUser } from '@decorator/get-user.decorator';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @UseGuards(AuthGuard)
