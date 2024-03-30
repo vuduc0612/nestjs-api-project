@@ -11,8 +11,8 @@ import {
     UseInterceptors,
 } from '@nestjs/common';
 import { TodoService } from '@service/todo.service';
-import { User } from '@entity/user.entity';
-import { Todo } from '@entity/todo.entity';
+import { User } from '@entity/user/user.entity';
+import { Todo } from '@entity/todo/todo.entity';
 import { AuthGuard } from '@guard/auth.guard';
 import { GetUser } from '@decorator/get-user.decorator';
 
