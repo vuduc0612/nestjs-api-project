@@ -1,5 +1,5 @@
-import { Todo } from '@entity/todo.entity';
-import { User } from '@entity/user.entity';
+import { Todo } from '@modules/todo/entity/todo.entity';
+import { User } from '@modules/user/entity/user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

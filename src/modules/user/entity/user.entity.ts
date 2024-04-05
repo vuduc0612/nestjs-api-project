@@ -1,6 +1,6 @@
 // src/user/user.entity.ts
 
-import { Todo } from '@entity/todo.entity';
+import { Todo } from '@modules/todo/entity/todo.entity';
 import { Exclude } from 'class-transformer';
 
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
@@ -13,9 +13,8 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  
-  @Column()
   @Exclude()
+  @Column()
   password: string;
 
   @Column({ nullable: true })
