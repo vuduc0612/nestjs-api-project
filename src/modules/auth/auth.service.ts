@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable, Logger } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import * as argon from 'argon2';
 import { ConfigService } from '@nestjs/config';
@@ -8,6 +8,8 @@ import { User } from '@modules/user/entity/user.entity';
 import { AuthDto } from '@modules/auth/dto/auth.dto';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 
 
@@ -20,6 +22,7 @@ export class AuthService {
         private userRepository: Repository<User>,
         @InjectQueue('email-queue') 
         private readonly emailQueue: Queue,
+        @Inject(CACHE_MANAGER) private cacheManager: Cache
         
     ) { }
     async signUp(dto: AuthDto) {
@@ -37,6 +40,7 @@ export class AuthService {
             await this.userRepository.save(newUser);
 
             //delete newUser.password;
+            this.cacheManager.del('users');
             return this.signToken(newUser.id, newUser.email);;
         }
         else {
@@ -106,16 +110,5 @@ export class AuthService {
           throw error;
         }
     }
-    // async sendEmail(to: string, subject: string, body: string): Promise<void> {
-    //     try {
-    //         this.logger.log(`Sending email to ${to} with subject: ${subject}`);
-    //         await this.mailService.sendMail({
-    //             to, subject, html: body, 
-    //         });
-    //         this.logger.log(`Email was send`);
-    //     } catch (error) {
-    //         this.logger.error(`Failed to send email: ${error.message}`);
-    //         throw error;
-    //     }
-    // }
+   
 }

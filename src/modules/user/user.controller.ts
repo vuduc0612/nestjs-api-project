@@ -20,13 +20,13 @@ export class UserController {
     constructor(private userService: UserService,
                ) { }
 
-    @UseGuards(AuthGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     @Get('me')
     getMe(@GetUser('') user: User) {
         //console.log(user);
         return user;
     }
+    
     @UseInterceptors(UserInterceptor, CacheInterceptor)
     @Get('all')
     async findAll(): Promise<User[]> {

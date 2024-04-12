@@ -15,13 +15,15 @@ import { User } from '@modules/user/entity/user.entity';
 import { Todo } from '@modules/todo/entity/todo.entity';
 import { AuthGuard } from '@modules/auth/guard/auth.guard';
 import { GetUser } from '@modules/auth/decorator/get-user.decorator';
+import { TodoInterceptor } from '@modules/todo/interceptor/todo.interceptor';
 
-@UseGuards(AuthGuard)
-@UseInterceptors(ClassSerializerInterceptor)
+
+
 @Controller('todos')
 export class TodoController {
     constructor(private todoService: TodoService) { }
-
+    
+    @UseInterceptors(TodoInterceptor)
     @Get()
     async findAll(@GetUser() user: User) {
         //console.log(user);

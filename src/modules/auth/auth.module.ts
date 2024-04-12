@@ -10,34 +10,39 @@ import { BullModule } from '@nestjs/bull';
 import { EmailConsumer } from '@modules/auth/consumer/mail.consumer';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TasksService } from './cronjob/cronjob.service';
+import { CacheModule } from '@nestjs/cache-manager';
 
 
 @Module({
   imports: [
     JwtModule,
     TypeOrmModule.forFeature([User]),
-    ConfigModule.forRoot({ isGlobal: true }),
     MailerModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         transport: {
-          host: 'sandbox.smtp.mailtrap.io',//configService.getOrThrow('MAIL_HOST'),//'sandbox.smtp.mailtrap.io', // Sử dụng host của Mailtrap
-          port: 2525, // Sử dụng port của Mailtrap
+          host: configService.getOrThrow('MAIL_HOST'), 
+          secure: false,
+          //port: configService.getOrThrow('MAIL_PORT'), 
           auth: {
-            user: '24c2c9d6fd4047', // SMTP username từ Mailtrap
-            pass: '65ae62cd0b4307', // SMTP password từ Mailtrap
+            user: configService.getOrThrow('MAIL_USER'), 
+            pass: configService.getOrThrow('MAIL_PASSWORD'), 
           },
         },
       }),
       inject: [ConfigService],
     }),
-    BullModule.registerQueue({
+    BullModule.registerQueueAsync({
       name: 'email-queue',
-      redis: {
-        host: 'localhost',
-        port: 6379,
-      },
+      useFactory: (configService: ConfigService) => ({
+        redis: {
+          host: 'localhost',//configService.getOrThrow('REDIS_HOST'),
+          port: 6379,//configService.getOrThrow('REDIS_PORT')
+        },
+      }),
+      inject: [ConfigService],
     }),
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
+    CacheModule.register()
   ],
   controllers: [AuthController],
   providers: [AuthService, EmailConsumer, TasksService]

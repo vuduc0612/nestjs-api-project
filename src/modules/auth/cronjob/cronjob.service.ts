@@ -8,7 +8,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 export class TasksService {
     private readonly logger = new Logger(TasksService.name);
     constructor(private mailService: MailerService) { }
-    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+    @Cron(CronExpression.EVERY_2ND_HOUR_FROM_1AM_THROUGH_11PM)
     async handleCron() {
         await this.mailService.sendMail({
             to: 'duc@gmail.com',
