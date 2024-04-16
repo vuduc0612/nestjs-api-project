@@ -13,8 +13,9 @@ import { GetUser } from '@modules/auth/decorator/get-user.decorator';
 import { UserInterceptor } from '@modules/user/interceptor/user.interceptor';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 import { UserService } from '@modules/user/user.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
-
+@ApiBearerAuth()
 @Controller('users')
 export class UserController {
     constructor(private userService: UserService,

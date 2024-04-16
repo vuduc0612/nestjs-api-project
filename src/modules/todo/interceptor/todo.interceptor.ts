@@ -6,7 +6,7 @@ export class TodoInterceptor implements NestInterceptor{
         return next
         .handle()
         .pipe(map((data) => {
-            const result = data.map(({id, ...todo}) => todo);
+            const result = data.map(({description, ...todo}) => todo);
             return result;
         }))
     }

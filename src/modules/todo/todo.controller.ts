@@ -16,9 +16,11 @@ import { Todo } from '@modules/todo/entity/todo.entity';
 import { AuthGuard } from '@modules/auth/guard/auth.guard';
 import { GetUser } from '@modules/auth/decorator/get-user.decorator';
 import { TodoInterceptor } from '@modules/todo/interceptor/todo.interceptor';
+import { TodoDto } from './dto/todo.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 
-
+@ApiBearerAuth()
 @Controller('todos')
 export class TodoController {
     constructor(private todoService: TodoService) { }
@@ -31,13 +33,13 @@ export class TodoController {
     }
 
     @Post()
-    async create(@Body() todo: Todo, @GetUser() user: User) {
+    async create(@Body() todo: TodoDto, @GetUser() user: User) {
         //console.log(user);
         return this.todoService.create(user.id, todo);
     }
 
     @Put(':id')
-    async update(@Body() todo: Todo, @Param('id') idTodo: number, @GetUser() user: User) {
+    async update(@Body() todo: TodoDto, @Param('id') idTodo: number, @GetUser() user: User) {
         return this.todoService.update(user.id, idTodo, todo);
     }
 
